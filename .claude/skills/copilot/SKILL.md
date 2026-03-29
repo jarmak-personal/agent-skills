@@ -57,13 +57,13 @@ When the calling agent specifies requirements, translate to flags:
 
 | Requirement | Flag | Notes |
 | --- | --- | --- |
-| Default / balanced | `--model claude-sonnet-4.5` | Standard coding tasks (1x cost) |
+| Default / balanced | `--model claude-sonnet-4.6` | Standard coding tasks (1x cost) |
 | Fast / cheap | `--model claude-haiku-4.5` | Quick, straightforward tasks (0.33x cost) |
-| Complex / high-quality | `--model claude-opus-4.5` | Multi-step problems, nuanced reasoning (3x cost) |
+| Complex / high-quality | `--model claude-opus-4.6` | Multi-step problems, nuanced reasoning (3x cost) |
 | OpenAI | `--model gpt-5.2-codex` | OpenAI's code model (1x cost) |
 | Google | `--model gemini-3-pro` | Google's model (1x cost) |
 
-If not specified, use default: `claude-sonnet-4.5`.
+If not specified, use default: `claude-sonnet-4.6`.
 
 ## File References
 

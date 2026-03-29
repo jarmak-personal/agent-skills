@@ -79,9 +79,9 @@ npm install -g @githubnext/github-copilot-cli
 Then verify:
 ```bash
 codex --version
-gh copilot --version
+copilot --version
 gemini --version
-cursor --version
+agent --version   # Cursor AI CLI
 ```
 
 ### API key not set

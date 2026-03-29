@@ -67,8 +67,8 @@ When the calling agent specifies requirements, translate to flags:
 
 | Requirement | Flag | Notes |
 | --- | --- | --- |
-| Default / high-quality | `-m gemini-2.5-pro` | Best for complex reasoning |
-| Fast / cheap | `-m gemini-2.5-flash` | Quick, straightforward tasks |
+| Default / high-quality | `-m gemini-3-pro` | Best for complex reasoning |
+| Fast / cheap | `-m gemini-3-flash` | Quick, straightforward tasks |
 
 If not specified, use default model (no flag needed).
 

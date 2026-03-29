@@ -34,7 +34,7 @@ Delegation provides three key benefits:
 2. **Alternative Perspectives**: Different AI agents have different training and specializations. Delegation provides diverse approaches.
 
 3. **Specialized Expertise**: Each agent excels at different task types:
-   - **Copilot**: Opus specialist - complex reasoning, security analysis, deep reviews
+   - **Copilot**: Deep analysis specialist - complex reasoning, security analysis, deep reviews
    - **Cursor**: Planning, architecture, refactoring, debugging, code review
    - **Gemini**: Primary code generation, research, documentation, analysis
    - **Codex**: Miscellaneous coding, algorithms, utility scripts
@@ -108,7 +108,7 @@ The CLI returns JSON:
   "selected_agent": "gemini",
   "confidence": 0.85,
   "reasoning": "Task type 'research' with moderate complexity. Gemini excels at research.",
-  "recommended_model": "gemini-3-flash",
+  "recommended_model": "gemini-3-pro",
   "alternative_agents": [...],
   "task_analysis": {
     "task_type": "research|code_generation|code_debugging|...",
@@ -138,6 +138,17 @@ Tell the user which agent was selected, then IMMEDIATELY invoke the Task tool:
 - `selected_agent: "cursor"` → use `subagent_type: "cursor-driver"`
 - `selected_agent: "gemini"` → use `subagent_type: "gemini-driver"`
 - `selected_agent: "copilot"` → use `subagent_type: "copilot-driver"`
+- `selected_agent: null` (no eligible agents) → see "No Agent Available" below
+
+**If `selected_agent` is null:**
+No installed agents match the task. Tell the user:
+> "No eligible agents are available for this task. Install at least one CLI tool:
+> - `npm install -g @openai/codex` (Codex)
+> - `npm install -g @githubnext/github-copilot-cli` (Copilot)
+> - Gemini: see https://ai.google.dev/gemini-api/docs/cli
+> - Cursor: https://cursor.com"
+
+Do NOT fall back to handling the task yourself. The user invoked `/delegate` specifically to use an external agent.
 
 **⚠️ DO NOT:**
 - Say "however, I'll handle this directly"
@@ -185,11 +196,11 @@ For long outputs (>500 chars), summarize key findings:
 
 ## Agent Capabilities & Models
 
-| Agent | Role | Best For | Model |
-|-------|------|----------|-------|
-| **copilot** | Opus Specialist | Complex reasoning, security analysis, deep reviews | claude-opus-4.5 (all tiers) |
-| **cursor** | Structural Work | Planning, architecture, refactoring, debugging, code review | --model auto (auto-selects optimal model) |
-| **gemini** | Code Gen Engine | Code generation (post-planning), research, documentation | gemini-3-pro (all tiers) |
+| Agent | Role | Best For | Model (simple / moderate / complex) |
+|-------|------|----------|--------------------------------------|
+| **copilot** | Deep Analysis | Complex reasoning, security analysis, deep reviews | claude-haiku-4.5 / claude-sonnet-4.6 / claude-opus-4.6 |
+| **cursor** | Structural Work | Planning, architecture, refactoring, debugging, code review | gpt-5.2 / claude-sonnet-4.6 / claude-opus-4.6 |
+| **gemini** | Code Gen Engine | Code generation, research, documentation, analysis | gemini-3-pro (all tiers) |
 | **codex** | Misc Coding | Algorithms, utility scripts, miscellaneous tasks | gpt-5.2-codex (med/high reasoning) |
 
 ## Task Type Routing Guide
@@ -251,6 +262,19 @@ If the CLI is unavailable or fails:
 If no agents are installed:
 - Inform user which CLIs need to be installed
 - Provide installation instructions
+
+## Session Resume Syntax (per agent)
+
+Each CLI has different resume syntax. Driver agents handle this automatically, but for reference:
+
+| Agent | Resume Command |
+|-------|---------------|
+| **Codex** | `echo "<prompt>" \| codex exec --skip-git-repo-check resume --last 2>/dev/null` |
+| **Cursor** | `agent resume -p "<prompt>" --output-format text` |
+| **Gemini** | `gemini --resume latest -p "<prompt>"` |
+| **Copilot** | `copilot --continue -p "<prompt>"` |
+
+Driver agents use resume automatically in follow-up cycles (up to 3 cycles per task).
 
 ## Optional: Server Mode
 

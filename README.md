@@ -9,13 +9,16 @@ A collection of Claude Code skills and sub-agents for delegating coding tasks to
 git clone https://github.com/sjarmak/agent-skills.git ~/agent-skills
 cd ~/agent-skills && ./install.sh
 
-# 2. Start the router service
-cd ~/agent-skills/router-service
-source .venv/bin/activate
-uvicorn router:app --host 127.0.0.1 --port 8765
-
-# 3. In any Claude Code session, use /delegate
+# 2. In any Claude Code session, use /delegate (no server required)
 /delegate Fix the authentication bug in login.py
+```
+
+The `/delegate` skill uses the standalone CLI router (`route_cli.py`) by default — no server needed.
+
+**Optional:** For high-volume routing or API access, run the FastAPI server:
+```bash
+cd ~/agent-skills/router-service && source .venv/bin/activate
+uvicorn router:app --host 127.0.0.1 --port 8765
 ```
 
 ---
@@ -96,11 +99,15 @@ gh auth login  # Authenticate with GitHub
 **Cursor AI CLI**
 ```bash
 # Install Cursor from https://cursor.com
-# The CLI is included with Cursor installation
-cursor --version
+# The CLI (`agent` command) is included with Cursor installation
+agent --version
 ```
 
-### 3. Start the Router Service
+### 3. (Optional) Start the Router Service
+
+The `/delegate` command works out of the box via the CLI router — no server required.
+
+For high-volume routing or direct API access, you can optionally run the FastAPI server:
 
 ```bash
 cd ~/agent-skills/router-service
@@ -112,8 +119,6 @@ uvicorn router:app --host 127.0.0.1 --port 8765
 ```bash
 alias start-router='cd ~/agent-skills/router-service && source .venv/bin/activate && uvicorn router:app --host 127.0.0.1 --port 8765 &'
 ```
-
-Then just run `start-router` before starting Claude Code.
 
 ---
 

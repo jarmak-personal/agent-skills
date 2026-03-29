@@ -152,7 +152,7 @@ The `/delegate` command in Claude Code uses this service automatically:
 /delegate Fix the authentication bug in login.py
 ```
 
-Or use the `model-router` skill directly for more control.
+Or use the CLI router (`route_cli.py`) directly for more control.
 
 ## Development
 

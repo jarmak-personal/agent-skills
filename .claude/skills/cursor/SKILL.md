@@ -96,8 +96,8 @@ export PATH="$HOME/.local/bin:$PATH" && agent -p "<prompt>" --model auto
 | Auto (RECOMMENDED) | `--model auto` | Cursor selects best model for task |
 | High-quality reasoning | `--model gpt-5.2` | Complex reasoning tasks |
 | Fast / cheap | `--model gemini-3-flash` | Quick, straightforward tasks |
-| Claude thinking | `--model opus-4.5-thinking` | Deep reasoning with Claude |
-| Claude fast | `--model sonnet-4.5` | Fast Claude option |
+| Claude thinking | `--model opus-4.6-thinking` | Deep reasoning with Claude |
+| Claude fast | `--model sonnet-4.6` | Fast Claude option |
 
 If not specified, always default to `--model auto`.
 

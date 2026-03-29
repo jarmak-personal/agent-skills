@@ -27,8 +27,8 @@ AGENT_CAPABILITIES = {
         "cli_command": "codex",
         "modes": {
             "default": None,
-            "high_reasoning": "--reasoning high",
-            "medium_reasoning": "--reasoning medium",
+            "high_reasoning": '--config model_reasoning_effort="high"',
+            "medium_reasoning": '--config model_reasoning_effort="medium"',
         },
         "models": {
             "simple": "gpt-5.2-codex",
@@ -57,9 +57,9 @@ AGENT_CAPABILITIES = {
         "cli_command": "agent",
         "modes": {"plan": "--mode plan", "agent": "--mode agent", "ask": "--mode ask"},
         "models": {
-            "simple": "gpt-4o",
-            "moderate": "claude-sonnet-4.5",
-            "complex": "claude-opus-4.5",
+            "simple": "gpt-5.2",
+            "moderate": "claude-sonnet-4.6",
+            "complex": "claude-opus-4.6",
         },
     },
     "gemini": {
@@ -99,9 +99,9 @@ AGENT_CAPABILITIES = {
         "cli_command": "copilot",
         "modes": {"default": None, "edit": "--allow-all-paths"},
         "models": {
-            "simple": "claude-opus-4.5",
-            "moderate": "claude-opus-4.5",
-            "complex": "claude-opus-4.5",
+            "simple": "claude-haiku-4.5",
+            "moderate": "claude-sonnet-4.6",
+            "complex": "claude-opus-4.6",
         },
     },
 }
@@ -251,8 +251,9 @@ SPECIALIZED_TASKS = {
             "troubleshoot",
             "diagnose the",
             "find the issue",
-            "why is.*failing",
-            "why is.*broken",
+            "why is",
+            "failing",
+            "broken",
         ],
         "single_match_keywords": ["debug the", "troubleshoot", "diagnose the"],
         "agent": "cursor",
@@ -272,8 +273,8 @@ SPECIALIZED_TASKS = {
             "locate all",
             "search for",
             "examine the",
-            "how is.*implemented",
-            "where is.*used",
+            "how is",
+            "where is",
         ],
         "single_match_keywords": [
             "research how",
@@ -1120,9 +1121,9 @@ def select_agent(
 
     if not agent_scores:
         return {
-            "selected_agent": "gemini",
-            "confidence": 0.5,
-            "reasoning": "Default fallback - all agents excluded or unavailable",
+            "selected_agent": None,
+            "confidence": 0.0,
+            "reasoning": "No eligible agents available - all agents are excluded or not installed",
             "recommended_model": None,
             "recommended_mode": None,
             "alternative_agents": [],
@@ -1157,8 +1158,7 @@ def select_agent(
             recommended_mode = caps["modes"].get("plan")
         elif task_type in ["code_review", "code_explanation"]:
             recommended_mode = caps["modes"].get("ask")
-        else:
-            recommended_mode = caps["modes"].get("agent")
+        # Otherwise let Cursor auto-select mode (defaults to agent)
     elif best_agent == "gemini":
         if task_type in ["code_generation", "documentation", "rewrite"]:
             recommended_mode = caps["modes"].get("edit")
