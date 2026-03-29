@@ -5,6 +5,14 @@ description: Translates task requirements into GitHub Copilot CLI commands. Used
 
 # GitHub Copilot CLI Skill Guide
 
+## PATH Setup (CRITICAL)
+
+Subagents run with a minimal PATH. Always include mise/node paths:
+
+```bash
+export PATH="$HOME/.local/share/mise/installs/node/24.13.0/bin:$HOME/.local/bin:$PATH" && copilot <args>
+```
+
 ## Baseline Rules
 
 Always apply these for programmatic (non-interactive) execution:
@@ -15,22 +23,22 @@ Always apply these for programmatic (non-interactive) execution:
 
 ### New Task (read-only)
 ```bash
-copilot -p "<prompt>"
+export PATH="$HOME/.local/share/mise/installs/node/24.13.0/bin:$HOME/.local/bin:$PATH" && copilot -p "<prompt>"
 ```
 
 ### New Task (with file edits)
 ```bash
-copilot -p "<prompt>" --allow-all-paths
+export PATH="$HOME/.local/share/mise/installs/node/24.13.0/bin:$HOME/.local/bin:$PATH" && copilot -p "<prompt>" --allow-all-paths
 ```
 
 ### New Task (with URL access)
 ```bash
-copilot -p "<prompt>" --allow-all-paths --allow-all-urls
+export PATH="$HOME/.local/share/mise/installs/node/24.13.0/bin:$HOME/.local/bin:$PATH" && copilot -p "<prompt>" --allow-all-paths --allow-all-urls
 ```
 
 ### Resume Session
 ```bash
-copilot --continue
+export PATH="$HOME/.local/share/mise/installs/node/24.13.0/bin:$HOME/.local/bin:$PATH" && copilot --continue
 ```
 Note: Session inherits its original model and permissions. Use `-p "<prompt>"` with `--continue` if providing a new prompt.
 
@@ -49,13 +57,13 @@ When the calling agent specifies requirements, translate to flags:
 
 | Requirement | Flag | Notes |
 | --- | --- | --- |
-| Default / balanced | `--model claude-sonnet-4.5` | Standard coding tasks (1x cost) |
+| Default / balanced | `--model claude-sonnet-4.6` | Standard coding tasks (1x cost) |
 | Fast / cheap | `--model claude-haiku-4.5` | Quick, straightforward tasks (0.33x cost) |
-| Complex / high-quality | `--model claude-opus-4.5` | Multi-step problems, nuanced reasoning (3x cost) |
+| Complex / high-quality | `--model claude-opus-4.6` | Multi-step problems, nuanced reasoning (3x cost) |
 | OpenAI | `--model gpt-5.2-codex` | OpenAI's code model (1x cost) |
 | Google | `--model gemini-3-pro` | Google's model (1x cost) |
 
-If not specified, use default: `claude-sonnet-4.5`.
+If not specified, use default: `claude-sonnet-4.6`.
 
 ## File References
 
